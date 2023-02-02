@@ -23,6 +23,20 @@ const App = (): JSX.Element => {
     setTitle("");
   };
 
+  const deleteItem = (id: number): void => {
+    // ! first route
+    // setArr(
+    //   arr.filter((item) => {
+    //     return item.id !== id;
+    //   })
+    // );
+    // ! second route
+    const newData = arr.filter((item) => {
+      return item.id !== id;
+    });
+    setArr(newData);
+  };
+
   return (
     <div className={styles.todo}>
       <h1 className={styles.title}>App Todo 📝</h1>
@@ -41,6 +55,9 @@ const App = (): JSX.Element => {
         {arr.map((item) => (
           <div key={item.id} className={styles.cardItem}>
             <p>{item.title}</p>
+            <div className={styles.delBtn}>
+              <button onClick={() => deleteItem(item.id)}>Del</button>
+            </div>
           </div>
         ))}
       </div>
