@@ -1,34 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { ChangeEvent, useState } from "react";
+import { data } from "./components/constants";
+import { IData } from "./components/interfaces";
+import styles from "./home.module.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = (): JSX.Element => {
+  const [title, setTitle] = useState<string>();
+  const [arr, setArr] = useState<IData[]>(data);
+
+  const changeHandler = (evt: ChangeEvent<HTMLInputElement>): void => {
+    setTitle(evt.target.value);
+  };
+
+  const handleSubmit = (): void => {
+    if (!title?.length) return;
+    console.log(title);
+    const newData = {
+      title: title,
+      id: new Date().getTime(),
+      description: "description ",
+    };
+    setArr([...arr, newData]);
+    setTitle("");
+  };
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+    <div className={styles.todo}>
+      <h1 className={styles.title}>App Todo 📝</h1>
+      <input
+        type="text"
+        placeholder="Enter todo"
+        value={title}
+        onChange={changeHandler}
+        className={styles.input}
+      />
+      <button className={styles.button} onClick={handleSubmit}>
+        Add button
+      </button>
 
-export default App
+      <div className={styles.card}>
+        {arr.map((item) => (
+          <div key={item.id} className={styles.cardItem}>
+            <p>{item.title}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default App;
